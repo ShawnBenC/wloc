@@ -11,8 +11,14 @@ import { $app, Console, done, Storage } from "@nsnanocat/util";
 import { BOXJS_KEY } from "./config/index.mjs";
 
 const url = $request.url || "";
-const params = new URL(url).searchParams;
+let params;
+try {
+	params = new URL(url).searchParams;
+} catch {
+	params = new URLSearchParams(url.split("?")[1] || "");
+}
 const action = params.get("action") || "save";
+Console.debug(`[wloc-settings] url=${url}, action=${action}`);
 
 let result;
 
